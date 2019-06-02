@@ -79,6 +79,7 @@ func size(t *Node) int {
 func main() {
 	fmt.Println(root)
 	root = nil
+	// lookupNode(root, 111)
 	traverse(root)
 
 	addNode(root, 1)
