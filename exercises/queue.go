@@ -9,89 +9,90 @@ type Node struct {
 	Next  *Node
 }
 
-var size = 0
-var queue = new(Node)
+type Queue struct {
+	Head *Node
+	Size int
+}
 
-func Push(t *Node, v int) bool {
-	if queue == nil {
-		queue = &Node{v, nil}
-		size++
-		return true
+func (q *Queue) Push(v int) bool {
+	if q == nil {
+		return false
 	}
 
-	t = &Node{v, nil}
-	t.Next = queue
-	queue = t
-	size++
+	node := &Node{v, nil}
+	node.Next = q.Head
+	q.Head = node
+	q.Size++
 
 	return true
 }
 
-func Pop(t *Node) (int, bool) {
-	if size == 0 {
+func (q *Queue) Pop() (int, bool) {
+	if q.Size == 0 {
 		return 0, false
 	}
 
-	if size == 1 {
-		queue = nil
-		size--
-		return t.Value, true
+	if q.Size == 1 {
+		value := q.Head.Value
+		q.Head = nil
+		q.Size = 0
+		return value, true
 	}
 
-	temp := t
-	for (t.Next) != nil {
-		temp = t
-		t = t.Next
+	node := q.Head
+	for node.Next.Next != nil {
+		node = node.Next
 	}
 
-	v := (temp.Next).Value
-	temp.Next = nil
+	value := (node.Next).Value
+	node.Next = nil
 
-	size--
-	return v, true
+	q.Size--
+	return value, true
 }
 
-func traverse(t *Node) {
-	if size == 0 {
+func (q *Queue) traverse() {
+	if q.Size == 0 {
 		fmt.Println("Empty Queue!")
 		return
 	}
 
-	for t != nil {
-		fmt.Printf("%d -> ", t.Value)
-		t = t.Next
+	node := q.Head
+	for node.Next != nil {
+		fmt.Printf("%d -> ", node.Value)
+		node = node.Next
 	}
-	fmt.Println()
+	fmt.Printf("%d -> \n", node.Value)
 }
 
 func main() {
-	queue = nil
-	Push(queue, 10)
-	fmt.Println("Size:", size)
-	traverse(queue)
+	queue := new(Queue)
+	queue.Push(10)
+	fmt.Println("Size:", queue.Size)
+	queue.traverse()
 
-	v, b := Pop(queue)
+	v, b := queue.Pop()
 	if b {
 		fmt.Println("Pop:", v)
 	}
-	fmt.Println("Size:", size)
+	fmt.Println("Size:", queue.Size)
 
 	for i := 0; i < 5; i++ {
-		Push(queue, i)
+		queue.Push(i)
 	}
-	traverse(queue)
-	fmt.Println("Size:", size)
+	queue.traverse()
+	fmt.Println("Size:", queue.Size)
 
-	v, b = Pop(queue)
+	v, b = queue.Pop()
 	if b {
 		fmt.Println("Pop:", v)
 	}
-	fmt.Println("Size:", size)
+	fmt.Println("Size:", queue.Size)
 
-	v, b = Pop(queue)
+	v, b = queue.Pop()
 	if b {
 		fmt.Println("Pop:", v)
 	}
-	fmt.Println("Size:", size)
-	traverse(queue)
+	fmt.Println("Size:", queue.Size)
+	queue.traverse()
 }
