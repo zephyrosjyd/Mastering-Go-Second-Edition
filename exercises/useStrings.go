@@ -9,9 +9,13 @@ import (
 var f = fmt.Printf
 
 func main() {
+	f("%s\n", "Hello, "+"World")
+
 	upper := s.ToUpper("Hello there!")
 	f("To Upper: %s\n", upper)
 	f("To Lower: %s\n", s.ToLower("Hello THERE"))
+
+	f("%s\n", "Hi, "+upper[6:]+string('7'))
 
 	f("%s\n", s.Title("tHis wiLL be A title!"))
 
